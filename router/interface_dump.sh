@@ -2,10 +2,10 @@
 
 interface=wlan0
 dump_command='tcpdump -e -s 256 type mgt subtype probe-resp or subtype probe-req -I -i '$interface
-server_protocol= 'http://'
-server_url= 'localhost'
-server_port= '8080'
-server_full_url = $server_protocol$server_url':'$server_port
+server_protocol='http://'
+server_url='localhost'
+server_port='8080'
+server_full_url=$server_protocol$server_url':'$server_port
 
 parse_response() {
 	#echo '----------------------------------------------------------------'
@@ -39,7 +39,8 @@ parse_request(){
 }
 
 send_data (){
-	curl --request POST $server_full_url'/login/' --data $1
+	#curl --request POST $server_full_url'/login/' --data $1
+	echo $@
 }
 
 $dump_command | while read dump_output; do
