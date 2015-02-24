@@ -1,44 +1,38 @@
 #!/bin/bash
 
-interface=wlan0
+interface=en0
 dump_command='tcpdump -e -s 256 type mgt subtype probe-resp or subtype probe-req -I -i '$interface
 server_protocol='http://'
 server_url='localhost'
 server_port='8080'
 server_full_url=$server_protocol$server_url':'$server_port
 
-parse_response() {
-	#echo '----------------------------------------------------------------'
-	#echo 'Probe Response'
-	#echo 'hora: '$1
-	#echo 'frecuencia: '$6 $7
-	#echo 'canal:' $8
-	#echo 'intensidad: ' $9
-	#echo ${13}
-	#echo ${16}
-	#echo ${19}
-	#echo ${24}
-	json_data='{package_type: response, time : '$1' ,frequency: '$6',channel_type : '$8',ssi: '$9', '${13}', '${16}', '${19}', ssid:'${24}'}'
-	#echo $json_data
+function parse_response {
+	local time=$1
+	local signal=`echo $@ | grep -o '[^ ,]\+ signal'`
+	local noise=`echo $@ | grep -o '[^ ,]\+ noise'`
+	local bssid=`echo $@ | grep -o 'BSSID:[^ ,]\+'`
+	local da=`echo $@ | grep -o 'DA:[^ ,]\+'`
+	local sa=`echo $@ | grep -o 'SA:[^ ,]\+'`
+	local freq=`echo $@ | grep -o '[^ ,]\+ MHz' | grep -o '[1-9]\+'`
+	local channel=`echo $@ | grep -o 'CH: [^ ,]\+' | grep -o '[1-9]\+'`
+	local json_data='{package_type: RESPONSE, time: '$time', signal: '$signal', noise: '$noise', BSSID: '$bssid', DA: '$da', SA: '$sa', freq: '$freq', channel: '$channel'}'
 	send_data $json_data
 }
 
-parse_request(){
-	#echo '----------------------------------------------------------------'
-	#echo 'Probe Request'
-	#echo 'hora: '$1
-	#echo 'frecuencia: '$6 $7
-	#echo 'canal:' $8
-	#echo 'intensidad: ' $9
-	#echo ${13}
-	#echo ${15}
-	#echo ${20}
-	json_data='{package_type: request, time : '$1' ,frequency: '$6',channel_type : '$8',ssi: '$9', '${13}', '${15}', ssid:'${20}'}'
-	#echo $json_data
+function parse_request {
+	local time=$1
+	local signal=`echo $@ | grep -o '[^ ,]\+ signal'`
+	local noise=`echo $@ | grep -o '[^ ,]\+ noise'`
+	local bssid=`echo $@ | grep -o 'BSSID:[^ ,]\+'`
+	local da=`echo $@ | grep -o 'DA:[^ ,]\+'`
+	local sa=`echo $@ | grep -o 'SA:[^ ,]\+'`
+	local freq=`echo $@ | grep -o '[^ ,]\+ MHz'`
+	local json_data='{package_type: REQUEST, time: '$time', signal: '$signal', noise: '$noise', BSSID: '$bssid', DA: '$da', SA: '$sa', freq: '$freq', channel: '$channel'}'
 	send_data $json_data
 }
 
-send_data (){
+function send_data {
 	#curl --request POST $server_full_url'/login/' --data $1
 	echo $@
 }
