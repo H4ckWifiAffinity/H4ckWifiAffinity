@@ -9,7 +9,7 @@ block content
         h2 Device List
 
         #deviceList
-            table
+            table(class="table table-striped table-bordered dataTable no-footer device-table")
                 thead
                     th MAC
                     th Average Signal
@@ -17,22 +17,21 @@ block content
                 tbody
         // /DEVICE LIST
 
-        // DEVICE INFO
-        #deviceInfo
-            h2 Device Info
-            p
-                strong Name:
-                |  <span id='userInfoName'></span>
-                br
-                strong Age:
-                |  <span id='userInfoAge'></span>
-                br
-                strong Gender:
-                |  <span id='userInfoGender'></span>
-                br
-                strong Location:
-                |  <span id='userInfoLocation'></span>
-        // /DEVICE INFO
+        // DEVICE FRAMES LIST
+        h2 Device Frame List
+        #deviceFrameList
+            table(class="table table-striped table-bordered dataTable no-footer device-table")
+                thead
+                    th type
+                    th time
+                    th signal
+                    th noise
+                    th bssid
+                    th dst
+                    th src
+                    th freq
+                tbody
+        // /DEVICE FRAME LIST
 
     // /WRAPPER
     script(src='/javascripts/devices.js')

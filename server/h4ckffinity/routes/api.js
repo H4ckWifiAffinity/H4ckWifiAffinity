@@ -22,31 +22,36 @@ router.post('/adddump', function(req, res) {
  */
 router.get('/devicelist', function(req, res) {
     var db = req.db;
-    //db.collection('raw_dump').aggregate(
-    //    [
-    //        {
-    //            $group : {
-    //                _id :  "$src" ,
-    //                averageSignal: { $avg: "$signal" },
-    //                count: { $sum: 1 }
-    //            }
-    //        }
-    //    ]
-    //).toArray(function (err, items) {
-    //    console.log(items);
-    //    res.json(items);
-    //});
     db.collection('raw_dump').aggregate(
         {
             $match : {type : "request"}
         },
         {
             $group : {_id : "$src", averageSignal: { $avg: "$signal" }, count : { $sum : 1 }}
-    },function(err, years) {
-        res.json(years);
+    },function(err, items) {
+        res.json(items);
     });
 });
 
+
+/*
+ * GET device frames.
+ */
+router.get('/deviceframes/:mac', function(req, res) {
+
+    var db = req.db,
+        r = /([a-f0-9]{2})([a-f0-9]{2})/i,
+        mac = req.params.mac;
+    while (r.test(mac)) {
+        mac = mac.replace(r, '$1' + ':' + '$2');
+    }
+    db.collection('raw_dump').aggregate(
+        {
+            $match : {type : "request", src : mac}
+        },function(err, frames) {
+            res.json(frames);
+        });
+});
 
 module.exports = router;
 
