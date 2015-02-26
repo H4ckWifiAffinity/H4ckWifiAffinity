@@ -1,0 +1,9 @@
+extends layout
+
+block content
+    h1= title
+    div
+        canvas#canv(width='800', height='600')
+        span#status
+    script(src='/javascripts/heatcanvas.js')
+    script(src='/javascripts/heatmap.js')
