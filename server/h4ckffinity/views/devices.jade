@@ -1,0 +1,38 @@
+extends layout
+block content
+    h1= title
+    p Welcome our h4ackademy project!
+    // Wrapper
+    #wrapper
+
+        // DEVICE LIST
+        h2 Device List
+
+        #deviceList
+            table
+                thead
+                    th MAC
+                    th Average Signal
+                    th Packages Amount
+                tbody
+        // /DEVICE LIST
+
+        // DEVICE INFO
+        #deviceInfo
+            h2 Device Info
+            p
+                strong Name:
+                |  <span id='userInfoName'></span>
+                br
+                strong Age:
+                |  <span id='userInfoAge'></span>
+                br
+                strong Gender:
+                |  <span id='userInfoGender'></span>
+                br
+                strong Location:
+                |  <span id='userInfoLocation'></span>
+        // /DEVICE INFO
+
+    // /WRAPPER
+    script(src='/javascripts/devices.js')
