@@ -6,6 +6,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+#deviceList, #deviceFrameList{
+    width: 40%;
+    display: inline-block;
+    margin: 20px;
+}
 #canvasContainer{
     position: relative;
 }
