@@ -233,3 +233,13 @@ stop(){
 * Navigate to System -> System. Set the hostname to anything different in each device (i.e. OpenWrt-x) and select your timezone.
 
 * Apply the changes.
+
+## Setting the monitor mode
+
+* Once everything else is done, the last thing to do is to put the wlan0 interface in monitor mode. So we disable the wifi access that we configured before and create a new one in Network -> Wifi. We choose Monitor Mode.
+
+* Now we can copy the script to the router and execute it. Remember to set the destination IP in the script and to execute it as:
+
+```
+# ./interface_dump wlan0 <router_name> 
+```
